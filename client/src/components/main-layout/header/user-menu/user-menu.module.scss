@@ -1,0 +1,44 @@
+.user-menu {
+    position: relative;
+
+    .avatar {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+
+        img {
+            border-radius: 100%;
+        }
+    }
+}
+
+.menu {
+    margin-top: 16px;
+    transform-origin: center top;
+    z-index: 999;
+    position: absolute;
+    top: 44px;
+    right: 0;
+    background-color: #fff;
+    border-radius: 4px;
+    min-width: 10rem;
+    transition: 0.2s ease-out 0s;
+    visibility: hidden;
+    opacity: 0;
+    height: 0px;
+
+    .menu-item {
+        line-height: 40px;
+        padding: 0 1rem;
+        color: #222;
+        font-size: 14px;
+    }
+
+    &--active {
+        top: 44px;
+        visibility: visible;
+        height: 128px;
+        opacity: 1;
+        padding: 0.25rem 0;
+    }
+}

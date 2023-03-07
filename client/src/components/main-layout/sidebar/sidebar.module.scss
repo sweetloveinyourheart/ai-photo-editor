@@ -1,0 +1,33 @@
+.sidebar {
+    height: calc(100vh - 56px);
+    position: relative;
+    z-index: 200;
+    background: #1e1f22;
+    display: flex;
+    width: calc(72px);
+}
+
+.sidebar-container {
+    display: flex;
+    flex-direction: column;
+    width: 72px;
+}
+
+.sidebar-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 72px;
+    padding: 2px;
+    cursor: pointer;
+
+    span {
+        font-size: 11px;
+        margin-top: 4px;
+    }
+
+    &--active {
+        background: #2b2c2f;
+    }
+}
