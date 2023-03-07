@@ -1,4 +1,7 @@
-import { FunctionComponent } from "react";
+"use client"
+
+import { FunctionComponent, useState } from "react";
+import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
 import styles from './tools-bar.module.scss'
 
 interface ToolsBarProps {
@@ -6,9 +9,14 @@ interface ToolsBarProps {
 }
 
 const ToolsBar: FunctionComponent<ToolsBarProps> = ({ children }) => {
+    const [isOpen, setIsOpen] = useState<boolean>(false)
+
     return (
-        <div className={styles["tools-bar"]}>
-            {children}
+        <div className={isOpen ? styles["tools-bar"] : `${styles["tools-bar"]} ${styles["tools-bar--disable"]}`}>
+            {isOpen ? children : null}
+            <div className={styles['toggle']} onClick={() => setIsOpen(s => !s)}>
+                {isOpen ? <BiChevronLeft size={20} /> : <BiChevronRight size={20} />}
+            </div>
         </div>
     );
 }

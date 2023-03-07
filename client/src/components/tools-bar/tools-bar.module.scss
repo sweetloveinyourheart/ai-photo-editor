@@ -1,11 +1,19 @@
 .tools-bar {
+    position: relative;
     background-color: #2b2c2f;
     padding: 16px 24px;
     width: 360px;
+    transition: 0.1s;
+    flex: 0 0 auto;
+
+    &--disable {
+        padding: 0;
+        width: 0;
+    }
 }
 
 .tools-block {
-    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
 }
 
 .tools-name {
@@ -15,4 +23,20 @@
     font-weight: 400;
     color: #7e838e;
     line-height: 18px;
+}
+
+.toggle {
+    position: absolute;
+    width: 20px;
+    height: 80px;
+    right: -13px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 20;
+    background-color: #2b2c2f;
+    border-top-right-radius: 24px;
+    border-bottom-right-radius: 24px;
+    display: flex;
+    align-items: center;
 }

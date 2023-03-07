@@ -1,0 +1,38 @@
+@import "../basic-tools.module.scss";
+
+.rotate-area {
+    margin-bottom: 2rem;
+}
+
+
+.rotate-options {
+    padding-top: 6px;
+    padding-left: 6px;
+    max-height: 200px;
+}
+
+.rotate {
+    display: flex;
+    flex-wrap: wrap;
+
+    .option {
+        width: calc(25% - 8px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 auto;
+        color: #bec0c8;
+        height: 32px;
+        background: hsla(0, 0%, 100%, .04);
+        justify-content: center;
+        margin: 4px;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: 0.2s;
+
+        &:hover {
+            color: #fff;
+            background: hsla(0, 0%, 100%, .08);
+        }
+    }
+}

@@ -15,7 +15,7 @@ export default function EditorLayout({
     <html lang="en">
       <body>
         <MainPageHeader />
-        <div style={{ display: 'flex' }}>
+        <div style={{ display: 'flex', height: 'calc(100vh - 56px)' }}>
           <MainSidebar />
           {children}
         </div>
