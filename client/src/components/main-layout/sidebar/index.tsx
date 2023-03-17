@@ -1,37 +1,33 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useState } from "react";
 import styles from './sidebar.module.scss'
 import { HiAdjustmentsHorizontal } from "react-icons/hi2"
 import { GiChemicalDrop, GiWoodFrame } from "react-icons/gi"
-import { MdShapeLine } from "react-icons/md"
+import { BsImage } from "react-icons/bs"
 import { RxText } from "react-icons/rx"
 
 interface MainSidebarProps {
-
+    nav: number
 }
 
-const MainSidebar: FunctionComponent<MainSidebarProps> = () => {
+const MainSidebar: FunctionComponent<MainSidebarProps> = ({ nav }) => {
     return (
         <div className={styles["sidebar"]}>
             <div className={styles["sidebar-container"]}>
-                <div className={`${styles["sidebar-item"]} ${styles["sidebar-item--active"]}`}>
+                <div className={nav === 0 ? `${styles["sidebar-item"]} ${styles["sidebar-item--active"]}` : styles["sidebar-item"]}>
                     <HiAdjustmentsHorizontal size={24} />
-                    <span>Adjust</span>
+                    <span>Tools</span>
                 </div>
-                <div className={styles["sidebar-item"]}>
-                    <GiChemicalDrop size={24} />
-                    <span>Effects</span>
-                </div>
-                <div className={styles["sidebar-item"]}>
+                <div className={nav === 1 ? `${styles["sidebar-item"]} ${styles["sidebar-item--active"]}` : styles["sidebar-item"]}>
                     <GiWoodFrame size={24} />
-                    <span>Frames</span>
+                    <span>Remove BG</span>
                 </div>
-                <div className={styles["sidebar-item"]}>
+                <div className={nav === 2 ? `${styles["sidebar-item"]} ${styles["sidebar-item--active"]}` : styles["sidebar-item"]}>
                     <RxText size={24} />
-                    <span>Text</span>
+                    <span>Text Art</span>
                 </div>
-                <div className={styles["sidebar-item"]}>
-                    <MdShapeLine size={24} />
-                    <span>Elements</span>
+                <div className={nav === 3 ? `${styles["sidebar-item"]} ${styles["sidebar-item--active"]}` : styles["sidebar-item"]}>
+                    <BsImage size={24} />
+                    <span>AI Art</span>
                 </div>
             </div>
         </div>

@@ -1,5 +1,6 @@
 import MainPageHeader from "@/components/main-layout/header"
 import MainSidebar from "@/components/main-layout/sidebar"
+import EditorProvider from "@/contexts/editor"
 
 export const metadata = {
   title: 'AI Artist Editor',
@@ -14,11 +15,13 @@ export default function EditorLayout({
   return (
     <html lang="en">
       <body>
-        <MainPageHeader />
-        <div style={{ display: 'flex', height: 'calc(100vh - 56px)' }}>
-          <MainSidebar />
-          {children}
-        </div>
+        <EditorProvider>
+          <MainPageHeader />
+          <div style={{ display: 'flex', height: 'calc(100vh - 56px)' }}>
+            <MainSidebar />
+            {children}
+          </div>
+        </EditorProvider>
       </body>
     </html>
   )

@@ -5,7 +5,10 @@ const nextConfig = {
   },
   images: {
     domains: ['lh3.googleusercontent.com'],
-  }
+  },
+  pwa: {
+    disable: true,
+  },
 }
 
 module.exports = nextConfig
