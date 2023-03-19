@@ -1,11 +1,16 @@
+import bcrypt
+import os
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi_jwt_auth import AuthJWT
-from schemas import SigninBody, Settings, SignupBody
 from models import User, Profile
 from database import get_db
 from sqlalchemy.orm import Session
+from dotenv import load_dotenv
+from .dto import SigninBody, Settings, SignupBody
+from utils import hash_pwd, check_pwd
 
-SECRET_KEY = "mysecretkey"
+load_dotenv()
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 router = APIRouter()
 
@@ -16,8 +21,13 @@ def get_config():
 
 
 @router.post("/signin")
-def sign_in(user: SigninBody, auth: AuthJWT = Depends()):
-    if user.username != "test" or user.password != "test":
+def sign_in(user: SigninBody, auth: AuthJWT = Depends(), db: Session = Depends(get_db)):
+    account = db.query(User).filter(User.username == user.username).first()
+    if not account:
+        raise HTTPException(status_code=401,detail="Bad username or password")
+
+    is_valid_passwd = check_pwd(user.password, account.password)
+    if not is_valid_passwd:
         raise HTTPException(status_code=401,detail="Bad username or password")
     
     access_token = auth.create_access_token(subject=user.username)
@@ -35,16 +45,25 @@ def refresh(auth: AuthJWT = Depends()):
 
 
 @router.post("/signup")
-async def sign_up(user: SignupBody, db: Session = Depends(get_db)):
+def sign_up(user: SignupBody, db: Session = Depends(get_db)):
     try:
         # create new user
-        new_user = User(username=user.username, password=user.password)
+        hashed_passwd = hash_pwd(user.password)
+
+        new_user = User(username=user.username, password=hashed_passwd)
         db.add(new_user)
         db.commit()
         db.refresh(new_user)
 
         # create new profile of created user
-        new_profile = Profile(first_name=user.first_name, last_name=user.last_name, phone=user.phone, birthday=user.birthday, user_id=new_user.id)
+        new_profile = Profile(
+            first_name=user.first_name, 
+            last_name=user.last_name, 
+            phone=user.phone, 
+            birthday=user.birthday, 
+            user_id=new_user.id
+        )
+
         db.add(new_profile)
         db.commit()
         db.refresh(new_profile)
