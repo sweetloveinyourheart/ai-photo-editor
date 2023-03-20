@@ -15,7 +15,7 @@ class Profile(Base):
     birthday = Column(Date, nullable=True)
     user_id = Column(ForeignKey("users.id"))
 
-    user = relationship("User", back_populates="profile")
+    user = relationship("User", back_populates="profile") 
 
 
 Base.metadata.create_all(bind=engine)

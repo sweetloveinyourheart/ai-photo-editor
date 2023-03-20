@@ -10,7 +10,7 @@ class User(Base):
     username = Column(String, unique=True, index=True)
     password = Column(String)
 
-    profile = relationship("Profile", back_populates="user")
+    profile = relationship("Profile", uselist=False, back_populates="user")
 
 Base.metadata.create_all(bind=engine)
     
