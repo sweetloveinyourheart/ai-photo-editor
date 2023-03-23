@@ -1,0 +1,71 @@
+.rm-bg {
+    overflow-y: scroll;
+    height: 100%;
+    padding: 16px 24px;
+    width: 100%;
+
+    h5 {
+        margin-bottom: 1rem;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        span {
+            margin-left: 8px;
+        }
+    }
+}
+
+.rm-bg-frame {
+    border-radius: 12px;
+    border: 1px solid #778;
+    padding: 12px;
+    background-color: rgba($color: #222, $alpha: 0.5);
+
+    .frame-text {
+        color: #eee;
+        font-size: 13px;
+        margin-bottom: 24px;
+    }
+
+    .frame-img {
+        margin-bottom: 24px;
+
+        img {
+            border-radius: 12px;
+        }
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        background-image: linear-gradient(to right, #8e2de2, #4a00e0);
+        border: none;
+        transition: background-image 0.2s linear;
+        z-index: 1;
+        position: relative;
+
+        &::before {
+            border-radius: 8px;
+            position: absolute;
+            content: "";
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-image: linear-gradient(to bottom,
+                    hsl(344, 100%, 50%),
+                    hsl(31, 100%, 40%));
+            z-index: -1;
+            transition: opacity 0.5s linear;
+            opacity: 0;
+        }
+
+        &:hover {
+            &::before {
+                opacity: 1;
+            }
+        }
+    }
+}

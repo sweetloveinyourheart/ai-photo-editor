@@ -9,7 +9,7 @@ interface ToolsBarProps {
 }
 
 const ToolsBar: FunctionComponent<ToolsBarProps> = ({ children }) => {
-    const [isOpen, setIsOpen] = useState<boolean>(false)
+    const [isOpen, setIsOpen] = useState<boolean>(true)
 
     return (
         <div className={isOpen ? styles["tools-bar"] : `${styles["tools-bar"]} ${styles["tools-bar--disable"]}`}>

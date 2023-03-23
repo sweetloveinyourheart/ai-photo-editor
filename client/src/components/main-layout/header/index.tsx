@@ -1,33 +1,48 @@
 "use client"
 
-import { ChangeEvent, FunctionComponent, useEffect, useRef, useState } from "react";
+import { FunctionComponent } from "react";
 import styles from './header.module.scss'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { IoDiamondOutline } from 'react-icons/io5'
 import { FiDownload } from "react-icons/fi"
 import UserMenu from "./user-menu/user-menu";
-import { useEditor } from "@/contexts/editor";
+import { EditorStatus, useEditor } from "@/contexts/editor";
+import { dataUrlToBlob } from "@/utils/dataUrl";
 
 interface MainPageHeaderProps {
 
 }
 
 const MainPageHeader: FunctionComponent<MainPageHeaderProps> = () => {
-    const inputFileRef = useRef<any>(null);
+    const { imageEditor, setStatus } = useEditor()
 
-    useEffect(() => {
-        const allWithClass = Array.from(
-          document.querySelectorAll('input.tui-image-editor-load-btn')
-        );
-        inputFileRef.current = allWithClass[0]
-      }, []);
+    const handleOpenImg = async () => {
+        const btn: HTMLAnchorElement | null = document.querySelector('input.tui-image-editor-load-btn')
+        if (!btn) return;
 
-    const handleButtonClick = () => {
-        if (inputFileRef.current) {
-            inputFileRef.current.click();
+        btn.click()
+
+        // listen for file reading
+        const listener = (e: any) => {
+            if(e.target?.files[0]) {
+                setStatus(EditorStatus.ReadyToEdit)
+                btn.removeEventListener('change', listener)
+            }
         }
+        btn.addEventListener('change', listener)
     };
 
+    const handleDownload = async () => {
+        const imageName: string = imageEditor.getImageName()
+        if (imageName.length === 0) return;
+
+        const dataURL: string = imageEditor.toDataURL();
+        const blob = await dataUrlToBlob(dataURL)
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = `${imageName}_edited.png`;
+        link.click();
+    }
 
     return (
         <div className={styles["header"]}>
@@ -35,9 +50,9 @@ const MainPageHeader: FunctionComponent<MainPageHeaderProps> = () => {
                 <div className={styles["logo"]}>
                     AI ARTIST
                 </div>
-                <label className={styles["open-img-btn"]} onClick={handleButtonClick}>
+                <label className={styles["open-img-btn"]} onClick={handleOpenImg}>
                     <AiOutlinePlus />
-                    <span>Open Image</span>
+                    <span>Select Image</span>
                 </label>
             </div>
             <div className={styles["right-panel"]}>
@@ -45,7 +60,7 @@ const MainPageHeader: FunctionComponent<MainPageHeaderProps> = () => {
                     <IoDiamondOutline />
                     <span>Premium</span>
                 </div>
-                <button className={styles["download-btn"]}>
+                <button className={styles["download-btn"]} onClick={handleDownload}>
                     <FiDownload />
                     <span>Download</span>
                 </button>

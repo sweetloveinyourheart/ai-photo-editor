@@ -1,0 +1,21 @@
+@import '../signin/signin.module.scss';
+
+.signup {
+    @extend .signin;
+}
+
+.to-signin-box {
+    @extend .to-signup-box;
+}
+
+.signup-form {
+    margin: 24px 0;
+
+    &__item {
+        @extend .auth-method;
+    }
+
+    .signup-btn {
+        @extend .signin-box;
+    }
+}

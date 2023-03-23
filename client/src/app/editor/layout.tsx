@@ -1,5 +1,5 @@
+import Canvas from "@/components/canvas/canvas"
 import MainPageHeader from "@/components/main-layout/header"
-import MainSidebar from "@/components/main-layout/sidebar"
 import EditorProvider from "@/contexts/editor"
 
 export const metadata = {
@@ -13,16 +13,12 @@ export default function EditorLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body>
-        <EditorProvider>
-          <MainPageHeader />
-          <div style={{ display: 'flex', height: 'calc(100vh - 56px)' }}>
-            <MainSidebar />
-            {children}
-          </div>
-        </EditorProvider>
-      </body>
-    </html>
+    <EditorProvider>
+      <MainPageHeader />
+      <div style={{ display: 'flex', height: 'calc(100vh - 56px)' }}>
+        {children}
+        <Canvas />
+      </div>
+    </EditorProvider>
   )
 }

@@ -111,7 +111,7 @@ a {
 }
 
 // tui-image-editor
-.tui-image-editor-header {
+.tui-image-editor-header, .tui-image-editor-menu {
   display: none !important;
 }
 
@@ -119,10 +119,10 @@ a {
 //   display: none !important;
 // }
 
-// .tui-image-editor-menu, .tui-image-editor-controls, .tui-image-editor-header {
-//   display: none !important;
-// }
+.tui-image-editor-menu, .tui-image-editor-controls {
+  display: none !important;
+}
 
-// .tui-image-editor-main-container {
-//   height: 100%;
-// }
+.tui-image-editor-main-container {
+  height: 100%;
+}

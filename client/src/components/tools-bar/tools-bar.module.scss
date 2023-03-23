@@ -1,7 +1,6 @@
 .tools-bar {
     position: relative;
     background-color: #2b2c2f;
-    padding: 16px 24px;
     width: 360px;
     transition: 0.1s;
     flex: 0 0 auto;
@@ -29,7 +28,7 @@
     position: absolute;
     width: 20px;
     height: 80px;
-    right: -13px;
+    right: -18px;
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
