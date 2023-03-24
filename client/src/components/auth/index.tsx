@@ -9,22 +9,30 @@ import SignIn from "./signin/signin";
 import SignUp from "./signup/signup";
 
 interface AuthenticationProps {
-
+    canClose?: boolean
 }
 
-const Authentication: FunctionComponent<AuthenticationProps> = () => {
+const Authentication: FunctionComponent<AuthenticationProps> = ({ canClose }) => {
+    const [isOpen, setIsOpen] = useState<boolean>(true)
     const [authTab, setAuthTab] = useState<"signin" | "signup">("signin")
 
     const changeTab = (tab: "signin" | "signup") => {
         setAuthTab(tab)
     }
 
+    if (!isOpen) return null
+
     return (
         <div className={styles['cover']}>
             <div className={styles['common-panel']}>
-                <div className={styles['close-box']}>
-                    <MdOutlineClose />
-                </div>
+                {canClose
+                    ? (
+                        <div className={styles['close-box']} onClick={() => setIsOpen(false)}>
+                            <MdOutlineClose />
+                        </div>
+                    )
+                    : null
+                }
                 <div className={styles["left-panel"]}>
                     {authTab === "signin"
                         ? (<SignIn changeTab={changeTab} />)

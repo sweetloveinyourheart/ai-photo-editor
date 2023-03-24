@@ -3,8 +3,7 @@ import axios from 'axios'
 const apiEndpoint = process.env.API_ENDPOINT
 
 interface RemoveBGResult {
-    error: string | null
-    image: any
+    image: Blob | null
 }
 
 async function removeBackground(image: Blob): Promise<RemoveBGResult> {
@@ -14,17 +13,15 @@ async function removeBackground(image: Blob): Promise<RemoveBGResult> {
         const { data } = await axios.post(
             `${apiEndpoint}/background/remove-bg`, 
             formData, 
-            { headers: { 'Content-Type': 'multipart/form-data' } }
+            { headers: { 'Content-Type': 'multipart/form-data' }, responseType: 'blob', }
         )
         if(!data) throw new Error()
 
         return {
-            error: null,
             image: data
         }
     } catch (error) {
         return {
-            error: 'Remove background task failed !',
             image: null
         }
     }

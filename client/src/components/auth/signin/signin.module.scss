@@ -85,6 +85,7 @@
 .message-box {
     min-height: 16px;
     font-size: 13px;
+    color: #f30606;
 }
 
 .remember-forget-box {
@@ -92,6 +93,7 @@
     justify-content: space-between;
     font-size: 12px;
     margin-bottom: 19px;
+    margin-top: 8px;
 
     .remember-box {
         cursor: pointer;
@@ -135,7 +137,6 @@
         height: 40px;
         line-height: 40px;
         text-align: center;
-        margin: 8px 0px;
         font-weight: 400;
         transition: all 0.3s;
         position: relative;

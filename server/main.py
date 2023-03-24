@@ -2,8 +2,24 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from fastapi_jwt_auth.exceptions import AuthJWTException
 from api import auth_router, generator_router, user_router, remover_bg_router
+from fastapi.middleware.cors import CORSMiddleware
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
+origins = [os.getenv('CLIENT_CORS_ORIGIN')]
+
+# initial app
 app = FastAPI()
+
+# middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # routes
 app.include_router(auth_router, prefix="/auth", tags=["Authentication"])

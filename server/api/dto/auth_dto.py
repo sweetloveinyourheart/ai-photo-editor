@@ -10,5 +10,5 @@ class SigninBody(BaseModel):
 class SignupBody(SigninBody):
     first_name: str
     last_name: str
-    phone: str
-    birthday: str
+    email: str | None
+    birthday: str | None

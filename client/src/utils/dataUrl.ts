@@ -19,4 +19,9 @@ function dataURLtoFile(dataURL: string, filename: string) {
     return new File([u8arr], filename, { type: mime });
 }
 
-export { dataUrlToBlob, dataURLtoFile }
+function blobToFile(blob: Blob): File {
+    const file = new File([blob], "image.png", { type: "image/png" });
+    return file
+}
+
+export { dataUrlToBlob, dataURLtoFile, blobToFile }

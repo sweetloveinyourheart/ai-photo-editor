@@ -1,4 +1,3 @@
-import bcrypt
 import os
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi_jwt_auth import AuthJWT
@@ -35,7 +34,7 @@ def sign_in(user: SigninBody, auth: AuthJWT = Depends(), db: Session = Depends(g
     return {"access_token": access_token, "refresh_token": refresh_token}
 
 
-@router.post('/refresh')
+@router.get('/refresh')
 def refresh(auth: AuthJWT = Depends()):
     auth.jwt_refresh_token_required()
 
@@ -59,7 +58,7 @@ def sign_up(user: SignupBody, db: Session = Depends(get_db)):
         new_profile = Profile(
             first_name=user.first_name, 
             last_name=user.last_name, 
-            phone=user.phone, 
+            email=user.email, 
             birthday=user.birthday, 
             user_id=new_user.id
         )

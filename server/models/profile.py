@@ -9,8 +9,8 @@ class Profile(Base):
     id = Column(Integer, primary_key=True, index=True)
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
-    phone = Column(String, nullable=True)
-    profile_pic = Column(String, default="/images/user.png")
+    email = Column(String, nullable=True) 
+    profile_pic = Column(String, default="/assets/images/user.png")
     plan = Column(Integer, default=0) # 0 -> manual user, 1 -> premium user
     birthday = Column(Date, nullable=True)
     user_id = Column(ForeignKey("users.id"))

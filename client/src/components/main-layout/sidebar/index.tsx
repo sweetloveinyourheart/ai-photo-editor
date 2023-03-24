@@ -22,13 +22,14 @@ const MainSidebar: FunctionComponent<MainSidebarProps> = ({ nav }) => {
                     <GiWoodFrame size={24} />
                     <span>Remove BG</span>
                 </Link>
-                <Link href="/editor/text-generator" className={nav === 2 ? `${styles["sidebar-item"]} ${styles["sidebar-item--active"]}` : styles["sidebar-item"]}>
-                    <RxText size={24} />
-                    <span>Text Art</span>
-                </Link>
                 <Link href="/editor/ai-generator" className={nav === 3 ? `${styles["sidebar-item"]} ${styles["sidebar-item--active"]}` : styles["sidebar-item"]}>
                     <BsImage size={24} />
                     <span>AI Art</span>
+                </Link>
+
+                <Link href="/editor/text-generator" className={nav === 2 ? `${styles["sidebar-item"]} ${styles["sidebar-item--active"]}` : styles["sidebar-item"]}>
+                    <RxText size={24} />
+                    <span>Generator</span>
                 </Link>
             </div>
         </div>
