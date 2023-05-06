@@ -11,6 +11,16 @@
     align-items: center;
     z-index: 99999;
     background: rgba(0, 0, 0, 0.4);
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        backdrop-filter: blur(5px);
+    }
 }
 
 .common-panel {
@@ -35,6 +45,7 @@
         align-items: center;
         cursor: pointer;
         transition: all 0.3s;
+        color: #fff;
     }
 
     .left-panel {

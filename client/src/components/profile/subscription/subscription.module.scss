@@ -1,0 +1,227 @@
+.subscription {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.banner {
+    display: flex;
+    margin: 120px 0;
+
+    &__img {
+        width: 50%;
+        display: flex;
+        align-items: center;
+    }
+
+    &__text {
+        width: 50%;
+
+        h5 {
+            margin: 0px 0 15px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1b1c;
+        }
+
+        p {
+            font-size: 14px;
+            color: #646464;
+            margin-bottom: 28px;
+        }
+
+        button {
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #ffb41f;
+            background-color: #ffb41f;
+            color: #222;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: 0.2s;
+
+            span {
+                margin-left: 8px;
+            }
+        }
+    }
+}
+
+.modal-area {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100000000;
+    background: rgba(0, 0, 0, 0.4);
+    user-select: none;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        backdrop-filter: blur(5px);
+    }
+}
+
+.modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    transform: translate(-50%, -50%);
+}
+
+.close-btn {
+    position: absolute;
+    right: 0;
+    padding: 20px;
+
+    svg {
+        cursor: pointer;
+    }
+}
+
+.content-box {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 12px;
+    min-width: 700px;
+    display: flex;
+
+    h5 {
+        font-weight: 500;
+        font-size: 16px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__left {
+        width: 50%;
+
+        p {
+            font-size: 13px;
+            line-height: 20px;
+            color: #1b1e24;
+            font-weight: 500;
+            margin: 0;
+            margin-top: 8px;
+            padding: 0;
+            font-weight: 400;
+        }
+    }
+
+    &__right {
+        width: 50%;
+        padding: 12px;
+        margin-top: 20px;
+    }
+}
+
+.card-box {
+    margin-top: 16px;
+}
+
+.card-item {
+    border-radius: 4px;
+    border: 1px solid #e7e8e9;
+    width: 100%;
+    padding: 16px 0 16px 40px;
+    box-sizing: border-box;
+    cursor: pointer;
+    position: relative;
+    margin-bottom: 8px;
+    margin-left: 0px;
+    margin-right: 0px;
+    display: flex;
+
+    .tick {
+        position: absolute;
+        color: #fff;
+        display: flex;
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        top: 18px;
+        left: 13px;
+        border-radius: 50%;
+        opacity: 1;
+        border: 2px solid #e7e8e9;
+        box-sizing: border-box;
+        justify-content: center;
+        align-items: center;
+
+        &--active {
+            background-color: #fdac32;
+            border: none;
+        }
+    }
+
+    .plan {
+        p {
+            span {
+                font-size: 16px;
+            }
+        }
+    }
+
+    &--active {
+        background: linear-gradient(90deg, #fff6e8 0%, #fff0e7 100%);
+        border: 1px solid rgba(254, 174, 69, 0.2);
+    }
+}
+
+.tip {
+    font-weight: 600;
+    line-height: 18px;
+    font-size: 12px;
+    margin-top: 12px;
+    margin-bottom: 8px; 
+    color: #35af9a;
+}
+
+.btn-box {
+    margin-top: 16px;
+
+    button {
+        border-radius: 4px;
+        width: 100% !important;
+        margin-bottom: 8px;
+        background: #2c7dfa;
+        border: 1px solid #2c7dfa !important;
+        color: #fff !important;
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        text-align: center !important;
+        line-height: 40px;
+        height: 40px;
+        transition: 0.2s;
+
+        &:hover {
+            background-color: #448eff !important;
+        }
+    }
+}
+
+.features {
+    background-color: blanchedalmond;
+    border-radius: 8px;
+    padding: 20px;
+    height: 100%;
+
+    .feature {
+        font-size: 13px;
+        display: flex;
+        margin-bottom: 8px;
+
+        span {
+            &:first-child {
+                margin-right: 8px;
+            }
+        }
+    }
+}

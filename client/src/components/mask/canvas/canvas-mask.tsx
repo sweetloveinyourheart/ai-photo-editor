@@ -12,7 +12,7 @@ const CanvasProcessingEffect = () => {
     return (
         <div className={styles['canvas-loader']}>
             <div className={styles['loader']} />
-            <span>Processing</span>
+            <span>Drawing ...</span>
         </div>
     )
 }

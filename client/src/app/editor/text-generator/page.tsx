@@ -1,4 +1,4 @@
-import MainSidebar from "@/components/main-layout/sidebar";
+import MainSidebar from "@/components/editor/sidebar";
 import SidebarMask from "@/components/mask/sidebar/sidebar-mask";
 import ToolsBar from "@/components/tools-bar";
 

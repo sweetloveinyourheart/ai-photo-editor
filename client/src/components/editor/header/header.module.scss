@@ -61,6 +61,11 @@
         display: flex;
         align-items: center;
         cursor: pointer;
+        transition: 0.2s;
+
+        &:hover {
+            background-color: #14a7fa;
+        }
 
         span {
             margin-left: 4px;
@@ -68,14 +73,13 @@
     }
 
     .premium {
-        border-radius: 20px;
-        background-color: #777;
         color: #fff;
         font-size: 14px;
         padding: 8px 16px;
         display: flex;
         align-items: center;
         cursor: pointer;
+        color: #ffb41f;
 
         span {
             margin-left: 4px;

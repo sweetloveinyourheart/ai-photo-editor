@@ -4,6 +4,7 @@ import { useAuth } from "@/contexts/auth";
 import Image from "next/image";
 import { FunctionComponent, useState } from "react";
 import styles from "./user-menu.module.scss"
+import { useRouter } from "next/navigation";
 
 interface UserMenuProps {
 
@@ -12,6 +13,7 @@ interface UserMenuProps {
 const UserMenu: FunctionComponent<UserMenuProps> = () => {
     const [userMenuActive, setUserMenuActive] = useState<boolean>(false)
 
+    const router = useRouter()
     const { removeTokens } = useAuth()
 
     return (
@@ -25,11 +27,8 @@ const UserMenu: FunctionComponent<UserMenuProps> = () => {
                 />
             </div>
             <div className={userMenuActive ? `${styles["menu"]} ${styles["menu--active"]}` : styles["menu"]}>
-                <div className={styles["menu-item"]}>
+                <div className={styles["menu-item"]} onClick={() => router.push('/profile')}>
                     My Account
-                </div>
-                <div className={styles["menu-item"]}>
-                    My Edited Photo
                 </div>
                 <div className={styles["menu-item"]} onClick={() => removeTokens()}>
                     Sign Out

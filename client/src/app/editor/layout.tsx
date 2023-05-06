@@ -1,6 +1,6 @@
 import Canvas from "@/components/canvas/canvas"
-import MainPageHeader from "@/components/main-layout/header"
-import AuthProvider from "@/contexts/auth"
+import MainPageHeader from "@/components/editor/header"
+import { AuthGuard } from "@/contexts/auth"
 import EditorProvider from "@/contexts/editor"
 
 export const metadata = {
@@ -14,7 +14,7 @@ export default function EditorLayout({
   children: React.ReactNode
 }) {
   return (
-    <AuthProvider>
+    <AuthGuard>
       <EditorProvider>
         <MainPageHeader />
         <div style={{ display: 'flex', height: 'calc(100vh - 56px)' }}>
@@ -22,6 +22,6 @@ export default function EditorLayout({
           <Canvas />
         </div>
       </EditorProvider>
-    </AuthProvider>
+    </AuthGuard>
   )
 }

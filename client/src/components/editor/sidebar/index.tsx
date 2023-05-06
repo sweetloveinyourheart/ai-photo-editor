@@ -26,11 +26,11 @@ const MainSidebar: FunctionComponent<MainSidebarProps> = ({ nav }) => {
                     <BsImage size={24} />
                     <span>AI Art</span>
                 </Link>
-
+{/* 
                 <Link href="/editor/text-generator" className={nav === 2 ? `${styles["sidebar-item"]} ${styles["sidebar-item--active"]}` : styles["sidebar-item"]}>
                     <RxText size={24} />
                     <span>Generator</span>
-                </Link>
+                </Link> */}
             </div>
         </div>
     );

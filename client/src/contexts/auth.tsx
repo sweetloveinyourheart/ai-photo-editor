@@ -19,6 +19,17 @@ export function useAuth() {
     return useContext(AuthContext)
 }
 
+export function AuthGuard({children}: { children: any }) {
+    const { accessToken } = useAuth()
+    
+    return (
+        <>
+            {!accessToken ? <Authentication /> : null}
+            {children}
+        </>
+    )
+}
+
 export default function AuthProvider({ children }: { children: any }) {
     const [accessToken, setAccessToken] = useState<string | null>(null)
     const [loading, setLoading] = useState<boolean>(true)
@@ -76,13 +87,13 @@ export default function AuthProvider({ children }: { children: any }) {
         accessToken,
         addTokens,
         removeTokens
-    }), [])
+    }), [accessToken, addTokens, removeTokens])
 
     if (loading) return <PageLoading />
     
     return (
         <AuthContext.Provider value={memoedValue}>
-            {accessToken ? children : <Authentication />}
+            {children}
         </AuthContext.Provider>
     )
 }

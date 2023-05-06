@@ -8,6 +8,7 @@ import { FiDownload } from "react-icons/fi"
 import UserMenu from "./user-menu/user-menu";
 import { EditorStatus, useEditor } from "@/contexts/editor";
 import { dataUrlToBlob } from "@/utils/dataUrl";
+import { useRouter } from 'next/navigation';
 
 interface MainPageHeaderProps {
 
@@ -15,6 +16,11 @@ interface MainPageHeaderProps {
 
 const MainPageHeader: FunctionComponent<MainPageHeaderProps> = () => {
     const { imageEditor, setStatus } = useEditor()
+    const router = useRouter()
+
+    const onLogoClick = () => {
+        router.push('/')
+    }
 
     const handleOpenImg = async () => {
         const btn: HTMLAnchorElement | null = document.querySelector('input.tui-image-editor-load-btn')
@@ -47,7 +53,7 @@ const MainPageHeader: FunctionComponent<MainPageHeaderProps> = () => {
     return (
         <div className={styles["header"]}>
             <div className={styles["left-panel"]}>
-                <div className={styles["logo"]}>
+                <div className={styles["logo"]} onClick={onLogoClick}>
                     AI ARTIST
                 </div>
                 <label className={styles["open-img-btn"]} onClick={handleOpenImg}>

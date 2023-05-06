@@ -1,4 +1,5 @@
 "use client"
+
 import { FunctionComponent, useState } from "react";
 import { MdOutlineClose } from 'react-icons/md'
 import { GiWoodFrame } from 'react-icons/gi'
@@ -7,27 +8,30 @@ import { HiAdjustmentsHorizontal } from 'react-icons/hi2'
 import { BsImage } from "react-icons/bs";
 import SignIn from "./signin/signin";
 import SignUp from "./signup/signup";
+import { useAuth } from "@/contexts/auth";
 
 interface AuthenticationProps {
-    canClose?: boolean
+    active?: boolean
+    onClose?: () => void
 }
 
-const Authentication: FunctionComponent<AuthenticationProps> = ({ canClose }) => {
-    const [isOpen, setIsOpen] = useState<boolean>(true)
+const Authentication: FunctionComponent<AuthenticationProps> = ({  active, onClose }) => {
     const [authTab, setAuthTab] = useState<"signin" | "signup">("signin")
+
+    const { accessToken } = useAuth()
 
     const changeTab = (tab: "signin" | "signup") => {
         setAuthTab(tab)
     }
 
-    if (!isOpen) return null
+    if (active === false || accessToken) return null
 
     return (
         <div className={styles['cover']}>
             <div className={styles['common-panel']}>
-                {canClose
+                {active !== undefined && onClose !== undefined
                     ? (
-                        <div className={styles['close-box']} onClick={() => setIsOpen(false)}>
+                        <div className={styles['close-box']} onClick={() => onClose()}>
                             <MdOutlineClose />
                         </div>
                     )
