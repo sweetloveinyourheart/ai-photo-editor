@@ -10,7 +10,9 @@ const nextConfig = {
     disable: true,
   },
   env: {
-    API_ENDPOINT: process.env.API_ENDPOINT
+    API_ENDPOINT: process.env.API_ENDPOINT,
+    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID
   }
 }
 

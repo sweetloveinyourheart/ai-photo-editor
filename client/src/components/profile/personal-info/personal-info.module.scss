@@ -86,4 +86,15 @@
             color: #2c7dfa;
         }
     }
+
+    .disabled {
+        cursor: not-allowed;
+        background-color: #777;
+        border-color: #777;
+
+        &:hover {
+            background-color: #777;
+            color: #fff;
+        }
+    }
 }

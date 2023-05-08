@@ -11,12 +11,11 @@ type NewUserInitialState = NewUserData & { retype_password: string }
 
 const SignUp: FunctionComponent<SignUpProps> = ({ changeTab }) => {
     const [newUser, setNewUser] = useState<NewUserInitialState>({
-        username: '',
+        email: '',
         password: '',
         retype_password: '',
         first_name: '',
-        last_name: '',
-        email: ''
+        last_name: ''
     })
     const [loading, setLoading] = useState<boolean>(false)
     const [message, setMessage] = useState<string>("")
@@ -64,12 +63,12 @@ const SignUp: FunctionComponent<SignUpProps> = ({ changeTab }) => {
             <form className={styles['signup-form']} onSubmit={handleFormSubmit}>
                 <div className={styles['signup-form__item']}>
                     <input
-                        type="text"
-                        required
-                        placeholder="Username *"
-                        name="username"
-                        value={newUser.username}
+                        type="email"
+                        placeholder="Email address *"
+                        name="email"
+                        value={newUser.email}
                         onChange={handleFormChange}
+                        required
                     />
                 </div>
                 <div className={styles['signup-form__twins-box']}>
@@ -111,15 +110,6 @@ const SignUp: FunctionComponent<SignUpProps> = ({ changeTab }) => {
                         placeholder="Retype password *"
                         name="retype_password"
                         value={newUser.retype_password}
-                        onChange={handleFormChange}
-                    />
-                </div>
-                <div className={styles['signup-form__item']}>
-                    <input
-                        type="email"
-                        placeholder="Email address"
-                        name="email"
-                        value={newUser.email}
                         onChange={handleFormChange}
                     />
                 </div>

@@ -13,6 +13,17 @@ async function getProfile(): Promise<User | null> {
     }
 }
 
+async function editProfile(profile: any) {
+    try {
+        const { data } = await axios.post(`${apiEndpoint}/user/edit-profile`, profile)
+        return data
+
+    } catch (error) {
+        return null
+    }
+}
+
 export {
-    getProfile
+    getProfile,
+    editProfile
 }

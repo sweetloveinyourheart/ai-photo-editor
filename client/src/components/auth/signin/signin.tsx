@@ -1,28 +1,32 @@
 import { useAuth } from "@/contexts/auth";
 import { signIn } from "@/services/auth";
 import { ChangeEvent, FormEvent, FunctionComponent, useState } from "react";
-import { BsFacebook } from "react-icons/bs";
 import { FcGoogle } from 'react-icons/fc'
 import styles from './signin.module.scss'
+import { signIn as GoogleSignIn } from "next-auth/react";
 
 interface SignInProps {
     changeTab: (tab: "signin" | "signup") => void
 }
 
 interface SigninInitialState {
-    username: string,
+    email: string,
     password: string
 }
 
 const SignIn: FunctionComponent<SignInProps> = ({ changeTab }) => {
     const [signinForm, setSigninForm] = useState<SigninInitialState>({
-        username: '',
+        email: '',
         password: ''
     })
     const [loading, setLoading] = useState<boolean>(false)
     const [message, setMessage] = useState<string>("")
 
     const { addTokens } = useAuth()
+
+    const onGoogleClick = async () => {
+        await GoogleSignIn('google')
+    }
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
@@ -37,14 +41,14 @@ const SignIn: FunctionComponent<SignInProps> = ({ changeTab }) => {
         setMessage("")
         e.preventDefault()
 
-        const { username, password } = signinForm
-        const data = await signIn(username, password)
+        const { email, password } = signinForm
+        const data = await signIn(email, password)
         if (!data) {
             setMessage('Username or password incorrect !')
             setLoading(false)
             return;
         }
-                
+
         addTokens(data)
     }
 
@@ -56,11 +60,11 @@ const SignIn: FunctionComponent<SignInProps> = ({ changeTab }) => {
                 <span onClick={() => changeTab("signup")}>Create an account</span>
             </div>
             <div className={styles['oauth-method']}>
-                <div className={styles['oauth-method-item']}>
+                {/* <div className={styles['oauth-method-item']}>
                     <BsFacebook color="#14a" size={20} />
                     <p>Login with Facebook</p>
-                </div>
-                <div className={styles['oauth-method-item']}>
+                </div> */}
+                <div className={styles['oauth-method-item']} onClick={onGoogleClick}>
                     <FcGoogle color="#f93707" size={20} />
                     <p>Login with Google</p>
                 </div>
@@ -72,10 +76,10 @@ const SignIn: FunctionComponent<SignInProps> = ({ changeTab }) => {
                 <div className={styles['auth-method']}>
                     <div>
                         <input
-                            type="text"
-                            placeholder="Enter your username"
-                            value={signinForm.username}
-                            name="username"
+                            type="email"
+                            placeholder="Enter your email"
+                            value={signinForm.email}
+                            name="email"
                             onChange={handleInputChange}
                         />
                     </div>

@@ -6,7 +6,7 @@ import Authentication from "../auth";
 import UserMenu from "../editor/header/user-menu/user-menu";
 import styles from './index.module.scss'
 
-interface RegularHeaderProps {}
+interface RegularHeaderProps { }
 
 const RegularHeader: FunctionComponent<RegularHeaderProps> = () => {
     const [signinModalActive, setSigninModalActive] = useState<boolean>(false)
@@ -20,8 +20,7 @@ const RegularHeader: FunctionComponent<RegularHeaderProps> = () => {
     return (
         <div className={styles['header']}>
             <div className={styles["logo"]}>
-            <Link href={"/"}> AI ARTIST</Link>
-               
+                <Link href={"/"}> AI ARTIST</Link>
             </div>
             <div className={styles['right-block']}>
                 <div className={styles['navbar']}>
@@ -32,19 +31,19 @@ const RegularHeader: FunctionComponent<RegularHeaderProps> = () => {
                         <Link href={"/editor"}>Photo Editor Tools</Link>
                     </div>
                     <div className={styles['navbar__item']}>
-                        <Link href={"/editor/generator"}>AI Tools</Link>
+                        <Link href={"/editor/ai-generator"}>AI Tools</Link>
                     </div>
                 </div>
                 {accessToken
                     ? <UserMenu />
-                    : ( 
+                    : (
                         <div className={styles['button-group']}>
                             <button onClick={() => setSigninModalActive(true)}>Sign In</button>
                         </div>
                     )
                 }
-                {signinModalActive 
-                    ? <Authentication active={signinModalActive} onClose={closeSiginModal}/> 
+                {signinModalActive
+                    ? <Authentication active={signinModalActive} onClose={closeSiginModal} />
                     : null
                 }
             </div>

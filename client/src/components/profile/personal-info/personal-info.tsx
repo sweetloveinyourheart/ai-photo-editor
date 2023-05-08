@@ -1,21 +1,27 @@
 import { FormEvent, FunctionComponent, useCallback, useEffect, useState } from "react";
 import { User, UserProfile } from "..";
 import styles from './personal-info.module.scss'
+import { editProfile } from "@/services/user";
+import PopupMessage from "@/components/message/message";
+import { useMessage } from "@/contexts/message";
 
 interface PersonalInfoProps {
     user: User | null
 }
 
 interface FormItemProps {
-    data: UserProfile | null,
+    data: PersonalProfile | null,
     title: string,
-    k: keyof UserProfile
-    onChange: (value: string, k: keyof UserProfile) => void
+    k: keyof PersonalProfile
+    onChange: (value: string, k: keyof PersonalProfile) => void
+    required?: boolean
+    canUpdate: boolean
 }
 
 interface PasswordItemProps {
     pwdChanger: PasswordChanger | null
     onChange: (value: string, k: keyof PasswordChanger) => void
+    canUpdate: boolean
 }
 
 interface PasswordChanger {
@@ -24,8 +30,20 @@ interface PasswordChanger {
     retype_password: string
 }
 
-const FormItem = ({ data, title, k, onChange }: FormItemProps) => {
+interface PersonalProfile {
+    first_name: string
+    last_name: string
+    birthday?: string
+}
+
+const FormItem = ({ data, title, k, onChange, required, canUpdate }: FormItemProps) => {
     const [isEditing, setIsEditing] = useState<boolean>(false)
+
+    useEffect(() => {
+        if(!canUpdate) {
+            setIsEditing(false)
+        }
+    }, [canUpdate])
 
     return (
         <div className={styles['form-item']}>
@@ -39,6 +57,7 @@ const FormItem = ({ data, title, k, onChange }: FormItemProps) => {
                                 value={data ? data[k] : ''}
                                 onChange={e => onChange(e.target.value, k)}
                                 placeholder={title}
+                                required={required}
                             />
                         </>
 
@@ -58,8 +77,14 @@ const FormItem = ({ data, title, k, onChange }: FormItemProps) => {
     )
 }
 
-const PasswordItem = ({ pwdChanger, onChange }: PasswordItemProps) => {
+const PasswordItem = ({ pwdChanger, onChange, canUpdate }: PasswordItemProps) => {
     const [isEditing, setIsEditing] = useState<boolean>(false)
+
+    useEffect(() => {
+        if(!canUpdate) {
+            setIsEditing(false)
+        }
+    }, [canUpdate])
 
     return (
         <div className={styles['form-item']} style={{ height: isEditing ? '170px' : '80px' }}>
@@ -110,15 +135,19 @@ const PasswordItem = ({ pwdChanger, onChange }: PasswordItemProps) => {
 }
 
 const PersonalInfo: FunctionComponent<PersonalInfoProps> = ({ user }) => {
-    const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
+    const [userProfile, setUserProfile] = useState<PersonalProfile | null>(null)
     const [passwordChanger, setPasswordChanger] = useState<PasswordChanger | null>(null)
+    const [canUpdate, setCanUpdate] = useState<boolean>(false)
 
-    const handleInfoChange = useCallback((value: string | number | undefined, k: keyof UserProfile) => {
+    const { newMessage } = useMessage()
+
+    const handleInfoChange = useCallback((value: string | number | undefined, k: keyof PersonalProfile) => {
         if (!userProfile) return;
 
         let userInfo: any = { ...userProfile }
         userInfo[k] = value
         setUserProfile(userInfo)
+        setCanUpdate(true)
     }, [userProfile])
 
     const handlePwdChange = useCallback((value: string, k: keyof PasswordChanger) => {
@@ -134,17 +163,43 @@ const PersonalInfo: FunctionComponent<PersonalInfoProps> = ({ user }) => {
 
         pwdInfo[k] = value
         setPasswordChanger(pwdInfo)
+        setCanUpdate(true)
     }, [passwordChanger])
 
-    const saveChange = (e: FormEvent<HTMLFormElement>) => {
+    const saveChange = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        console.log(userProfile, passwordChanger);
+        if (passwordChanger?.new_password !== passwordChanger?.retype_password) {
+            newMessage('Password does not match !', 'warning')
+            return;
+        }
+
+        if (passwordChanger?.new_password && passwordChanger.new_password.length < 6) {
+            newMessage('Password must have at least 6 character !', 'warning')
+            return;
+        }
+
+        console.log(userProfile);
+        
+
+        const data = await editProfile({
+            ...userProfile,
+            password: passwordChanger ? passwordChanger : undefined
+        })
+
+        if (!data) {
+            newMessage('Update failed', 'error')
+            return;
+        }
+
+        newMessage('Your information updated', 'success')
+        setCanUpdate(false)
     }
 
     useEffect(() => {
         if (user) {
-            setUserProfile(user.profile)
+            const { plan, profile_pic, user_id, ...data } = user.profile
+            setUserProfile(data)
         }
     }, [user])
 
@@ -159,36 +214,39 @@ const PersonalInfo: FunctionComponent<PersonalInfoProps> = ({ user }) => {
                         data={userProfile}
                         title="First Name"
                         onChange={handleInfoChange}
+                        required
+                        canUpdate={canUpdate}
                     />
                     <FormItem
                         k={'last_name'}
                         data={userProfile}
                         title="Last Name"
                         onChange={handleInfoChange}
-
-                    />
-                    <FormItem
-                        k={'email'}
-                        data={userProfile}
-                        title="Email Address"
-                        onChange={handleInfoChange}
-
+                        required
+                        canUpdate={canUpdate}
                     />
                     <FormItem
                         k={'birthday'}
                         data={userProfile}
                         title="Birthday"
                         onChange={handleInfoChange}
-
+                        canUpdate={canUpdate}
                     />
                     <PasswordItem
                         pwdChanger={passwordChanger}
                         onChange={handlePwdChange}
+                        canUpdate={canUpdate}
                     />
 
                 </div>
                 <div className={styles['save']}>
-                    <button type="submit">Save</button>
+                    <button 
+                        className={!canUpdate ? styles['disabled'] :  ''} 
+                        type="submit" 
+                        disabled={!canUpdate}
+                    >
+                        Save
+                    </button>
                 </div>
             </form>
         </>

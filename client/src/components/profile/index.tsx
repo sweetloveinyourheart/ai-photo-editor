@@ -8,15 +8,16 @@ import RegularHeader from "../header";
 import styles from "./index.module.scss"
 import PersonalInfo from "./personal-info/personal-info";
 import Subscription from "./subscription/subscription";
-import UploadedImages from "./uploaded-img/uploaded-img";
+import { useAuth } from "@/contexts/auth";
 
 export interface User {
     id: number
-    username: string
+    email: string
     profile: UserProfile
 }
 
 export interface UserProfile {
+    user_id?: number
     first_name: string
     last_name: string
     profile_pic: string
@@ -29,22 +30,24 @@ interface ProfileProps { }
 
 const tabs = [
     { name: 'Personal Info' },
-    { name: 'Subscription' },
-    { name: 'Uploaded Image' },
+    { name: 'Subscription' }
 ]
 
 const Profile: FunctionComponent<ProfileProps> = () => {
     const [user, setUser] = useState<User | null>(null)
     const [activeTab, setActiveTab] = useState<number>(0)
 
+    const { accessToken } = useAuth()
+
     useEffect(() => {
-        (async () => {
-            const user = await getProfile()
-            if (user) {
-                setUser(user)
-            }
-        })()
-    }, [])
+        if (accessToken)
+            (async () => {
+                const user = await getProfile()
+                if (user) {
+                    setUser(user)
+                }
+            })()
+    }, [accessToken])
 
     const renderTabByIndex = () => {
         switch (activeTab) {
@@ -52,8 +55,6 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                 return <PersonalInfo user={user} />
             case 1:
                 return <Subscription user={user} />
-            case 2:
-                return <UploadedImages />
 
             default:
                 return <PersonalInfo user={user} />
@@ -77,7 +78,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                         <h3>{user ? `${user.profile.first_name} ${user.profile.last_name}` : 'AI Artist User'}</h3>
                         <p>
                             <HiOutlineUser size={18} />
-                            <span>{user ? user.username : 'Ai Artist Username'}</span>
+                            <span>{user ? user.email : 'Ai Artist Username'}</span>
                         </p>
                     </div>
                 </div>
@@ -85,7 +86,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
             <div className={styles['tab']}>
                 {tabs.map((tab, index) => (
                     <div
-                        key={index} 
+                        key={index}
                         className={activeTab === index ? `${styles['tab-item']} ${styles['tab-item--active']}` : styles['tab-item']}
                         onClick={() => setActiveTab(index)}
                     >

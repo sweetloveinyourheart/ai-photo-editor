@@ -3,11 +3,10 @@ import axios from "axios";
 const apiEndpoint = process.env.API_ENDPOINT
 
 export interface NewUserData {
-    username: string,
+    email: string,
     password: string,
     first_name: string,
     last_name: string,
-    email?: string,
     birthday?: string
 }
 
@@ -16,9 +15,15 @@ export interface SignInResponse {
     refresh_token: string
 }
 
-async function signIn(username: string, password: string): Promise<SignInResponse | null> {
+export interface OAuth {
+    email?: string | null
+    name?: string | null
+    image?: string | null
+}
+
+async function signIn(email: string, password: string): Promise<SignInResponse | null> {
     try {
-        const { data } = await axios.post<SignInResponse>(`${apiEndpoint}/auth/signin`, { username, password })
+        const { data } = await axios.post<SignInResponse>(`${apiEndpoint}/auth/signin`, { email, password })
         if (!data) throw new Error()
 
         return data
@@ -53,8 +58,24 @@ async function refreshNewToken(refresh_token: string) {
     }
 }
 
+async function OAuth(user: OAuth): Promise<SignInResponse | null> {
+    try {
+        const { data } = await axios.post<SignInResponse>(`${apiEndpoint}/auth/oauth`, {
+            email: user.email,
+            name: user.name,
+            profile_pic: user.image
+        })
+        if (!data) throw new Error()
+
+        return data
+    } catch (error) {
+        return null
+    }
+}
+
 export {
     signIn,
     signUp,
-    refreshNewToken
+    refreshNewToken,
+    OAuth
 }

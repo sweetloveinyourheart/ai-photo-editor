@@ -5,7 +5,7 @@ from models import User, Profile
 from database import get_db
 from sqlalchemy.orm import Session
 from dotenv import load_dotenv
-from .dto import SigninBody, Settings, SignupBody
+from .dto import SigninBody, Settings, SignupBody, OAuthBody
 from utils import hash_pwd, check_pwd
 
 load_dotenv()
@@ -21,16 +21,16 @@ def get_config():
 
 @router.post("/signin")
 def sign_in(user: SigninBody, auth: AuthJWT = Depends(), db: Session = Depends(get_db)):
-    account = db.query(User).filter(User.username == user.username).first()
+    account = db.query(User).filter(User.email == user.email).first()
     if not account:
-        raise HTTPException(status_code=401,detail="Bad username or password")
+        raise HTTPException(status_code=401,detail="Bad email or password")
 
     is_valid_passwd = check_pwd(user.password, account.password)
     if not is_valid_passwd:
-        raise HTTPException(status_code=401,detail="Bad username or password")
+        raise HTTPException(status_code=401,detail="Bad email or password")
     
-    access_token = auth.create_access_token(subject=user.username)
-    refresh_token = auth.create_refresh_token(subject=user.username)
+    access_token = auth.create_access_token(subject=user.email)
+    refresh_token = auth.create_refresh_token(subject=user.email)
     return {"access_token": access_token, "refresh_token": refresh_token}
 
 
@@ -49,7 +49,7 @@ def sign_up(user: SignupBody, db: Session = Depends(get_db)):
         # create new user
         hashed_passwd = hash_pwd(user.password)
 
-        new_user = User(username=user.username, password=hashed_passwd)
+        new_user = User(email=user.email, password=hashed_passwd)
         db.add(new_user)
         db.commit()
         db.refresh(new_user)
@@ -58,7 +58,6 @@ def sign_up(user: SignupBody, db: Session = Depends(get_db)):
         new_profile = Profile(
             first_name=user.first_name, 
             last_name=user.last_name, 
-            email=user.email, 
             birthday=user.birthday, 
             user_id=new_user.id
         )
@@ -68,5 +67,40 @@ def sign_up(user: SignupBody, db: Session = Depends(get_db)):
         db.refresh(new_profile)
 
         return {"message": "New account registed!"}
+    except:
+        raise HTTPException(400, detail="Bad account information")
+    
+@router.post("/oauth")
+def oauth(user: OAuthBody, auth: AuthJWT = Depends(), db: Session = Depends(get_db)):
+    try:
+        account = db.query(User).filter(User.email == user.email).first()
+        if not account:
+             # create new user
+            new_user = User(email=user.email, password='')
+            db.add(new_user)
+            db.commit()
+            db.refresh(new_user)
+            
+            # get first and last name
+            words = user.name.split()
+            first_name = words[0]
+            last_name = " ".join(words[1:])
+
+            # create new profile of created user
+            new_profile = Profile(
+                first_name=first_name, 
+                last_name=last_name, 
+                profile_pic=user.profile_pic, 
+                user_id=new_user.id
+            )
+
+            db.add(new_profile)
+            db.commit()
+            db.refresh(new_profile)
+        
+        access_token = auth.create_access_token(subject=user.email)
+        refresh_token = auth.create_refresh_token(subject=user.email)
+        return {"access_token": access_token, "refresh_token": refresh_token}
+    
     except:
         raise HTTPException(400, detail="Bad account information")

@@ -1,0 +1,40 @@
+.popup-message {
+    position: fixed;
+    top: 72px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    z-index: 1000;
+    display: none;
+  
+    &.visible {
+      opacity: 1;
+      display: block;
+    }
+  
+    &.popup-message-info {
+      background-color: #1890ff;
+      color: #fff;
+    }
+  
+    &.popup-message-success {
+      background-color: #52c41a;
+      color: #fff;
+    }
+  
+    &.popup-message-warning {
+      background-color: #faad14;
+      color: #fff;
+    }
+  
+    &.popup-message-error {
+      background-color: #f5222d;
+      color: #fff;
+    }
+  }
+  

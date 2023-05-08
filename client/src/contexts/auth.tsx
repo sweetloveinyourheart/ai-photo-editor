@@ -1,11 +1,12 @@
 "use client"
 
 import axios from "axios";
-import { refreshNewToken, SignInResponse } from "@/services/auth";
+import { OAuth, refreshNewToken, SignInResponse } from "@/services/auth";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { clearRefreshToken, getRefreshToken, setRefreshToken } from "@/utils/cookies";
 import Authentication from "@/components/auth";
 import PageLoading from "@/ui/page-loading/page-loading";
+import { useSession } from "next-auth/react";
 
 interface Auth {
     accessToken: string | null
@@ -19,9 +20,9 @@ export function useAuth() {
     return useContext(AuthContext)
 }
 
-export function AuthGuard({children}: { children: any }) {
+export function AuthGuard({ children }: { children: any }) {
     const { accessToken } = useAuth()
-    
+
     return (
         <>
             {!accessToken ? <Authentication /> : null}
@@ -34,7 +35,10 @@ export default function AuthProvider({ children }: { children: any }) {
     const [accessToken, setAccessToken] = useState<string | null>(null)
     const [loading, setLoading] = useState<boolean>(true)
 
+    const { data: session } = useSession()
+
     const addTokens = useCallback((tokens: SignInResponse) => {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${tokens.access_token}`
         setAccessToken(tokens.access_token)
         setRefreshToken(tokens.refresh_token)
     }, [])
@@ -45,10 +49,21 @@ export default function AuthProvider({ children }: { children: any }) {
     }, [])
 
     useEffect(() => {
-        if (accessToken) {
-            axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
+        const user = session?.user
+        const rfToken = getRefreshToken()
+
+        if (user && !accessToken && !rfToken) {
+            (async () => {
+                const authData = await OAuth(user)
+                if (authData) {
+                    axios.defaults.headers.common['Authorization'] = `Bearer ${authData.access_token}`
+                    setAccessToken(authData.access_token)
+                    setRefreshToken(authData.refresh_token)
+                }
+            })()
         }
-    }, [accessToken])
+    }, [session])
+
 
     useEffect(() => {
         const rfToken = getRefreshToken()
@@ -65,6 +80,8 @@ export default function AuthProvider({ children }: { children: any }) {
                 setLoading(false)
                 return;
             }
+
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token.access_token}`
             setAccessToken(token.access_token)
             setLoading(false)
         })()
@@ -77,6 +94,7 @@ export default function AuthProvider({ children }: { children: any }) {
                 setAccessToken(null)
                 return;
             }
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token.access_token}`
             setAccessToken(token.access_token)
         }, 10 * 60 * 1000);
 
@@ -90,7 +108,7 @@ export default function AuthProvider({ children }: { children: any }) {
     }), [accessToken, addTokens, removeTokens])
 
     if (loading) return <PageLoading />
-    
+
     return (
         <AuthContext.Provider value={memoedValue}>
             {children}

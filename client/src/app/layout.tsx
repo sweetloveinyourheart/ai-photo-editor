@@ -1,5 +1,7 @@
 import AuthProvider from '@/contexts/auth'
 import './globals.scss'
+import MessageProvider from '@/contexts/message'
+import Provider from './provider'
 
 export const metadata = {
   title: 'AI Image Generator',
@@ -14,9 +16,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+        <Provider>
+          <AuthProvider>
+            <MessageProvider>
+              {children}
+            </MessageProvider>
+          </AuthProvider>
+        </Provider>
       </body>
     </html>
   )
