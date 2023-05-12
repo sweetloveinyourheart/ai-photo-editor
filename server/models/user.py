@@ -11,6 +11,8 @@ class User(Base):
     password = Column(String)
 
     profile = relationship("Profile", uselist=False, back_populates="user")
-
+    plan = relationship("Plan", uselist=False, back_populates="user")
+    payment = relationship("Payment", back_populates="user")
+ 
 Base.metadata.create_all(bind=engine)
     

@@ -7,6 +7,13 @@
     display: flex;
     margin: 120px 0;
 
+    &--premium {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
     &__img {
         width: 50%;
         display: flex;

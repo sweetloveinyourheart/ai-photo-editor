@@ -9,6 +9,7 @@ import { EditorStatus, useEditor } from "@/contexts/editor";
 import ButtonLoading from "@/ui/button-loading/button-loading";
 import { GenerateImageByText } from "@/services/ai-art";
 import { b64JsonToFile, dataURLtoFile } from "@/utils/dataUrl";
+import { useMessage } from "@/contexts/message";
 
 interface AIArtProps { }
 
@@ -35,6 +36,7 @@ const AIArt: FunctionComponent<AIArtProps> = () => {
     const [artStyle, setArtStyle] = useState<string | null>(null)
 
     const { imageEditor, status, setStatus } = useEditor()
+    const { newMessage } = useMessage()
 
     const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
         const { value } = e.target
@@ -75,8 +77,8 @@ const AIArt: FunctionComponent<AIArtProps> = () => {
             if (!file) return;
             imageEditor.loadImageFromFile(file)
 
-        } catch (error) {
-
+        } catch (error: any) {
+            newMessage(error.message, 'warning', 5000)
         } finally {
             setStatus(EditorStatus.ReadyToEdit)
         }

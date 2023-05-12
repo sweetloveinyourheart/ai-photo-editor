@@ -10,9 +10,8 @@ class Profile(Base):
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
     profile_pic = Column(String, default="/assets/images/user.png")
-    plan = Column(Integer, default=0) # 0 -> manual user, 1 -> premium user
     birthday = Column(Date, nullable=True)
-    user_id = Column(ForeignKey("users.id"))
+    user_id = Column(Integer, ForeignKey("users.id"))
 
     user = relationship("User", back_populates="profile") 
 

@@ -10,10 +10,16 @@ import PersonalInfo from "./personal-info/personal-info";
 import Subscription from "./subscription/subscription";
 import { useAuth } from "@/contexts/auth";
 
+interface Plan {
+    membership_tier: number, 
+    generation_limited: number
+}
+
 export interface User {
     id: number
     email: string
     profile: UserProfile
+    plan: Plan
 }
 
 export interface UserProfile {
@@ -22,7 +28,6 @@ export interface UserProfile {
     last_name: string
     profile_pic: string
     email?: string
-    plan: number
     birthday?: string
 }
 

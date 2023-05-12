@@ -2,6 +2,7 @@ import AuthProvider from '@/contexts/auth'
 import './globals.scss'
 import MessageProvider from '@/contexts/message'
 import Provider from './provider'
+import PaypalProvider from '@/contexts/paypal'
 
 export const metadata = {
   title: 'AI Image Generator',
@@ -19,7 +20,9 @@ export default function RootLayout({
         <Provider>
           <AuthProvider>
             <MessageProvider>
-              {children}
+              <PaypalProvider>
+                {children}
+              </PaypalProvider>
             </MessageProvider>
           </AuthProvider>
         </Provider>

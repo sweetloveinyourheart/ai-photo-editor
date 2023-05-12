@@ -1,7 +1,7 @@
 import os
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi_jwt_auth import AuthJWT
-from models import User, Profile
+from models import User, Profile, Plan
 from database import get_db
 from sqlalchemy.orm import Session
 from dotenv import load_dotenv
@@ -54,6 +54,14 @@ def sign_up(user: SignupBody, db: Session = Depends(get_db)):
         db.commit()
         db.refresh(new_user)
 
+        #create member tier
+        new_plan = Plan(
+            user_id=new_user.id
+        )
+        db.add(new_plan)
+        db.commit()
+        db.refresh(new_plan)       
+
         # create new profile of created user
         new_profile = Profile(
             first_name=user.first_name, 
@@ -80,6 +88,14 @@ def oauth(user: OAuthBody, auth: AuthJWT = Depends(), db: Session = Depends(get_
             db.add(new_user)
             db.commit()
             db.refresh(new_user)
+
+            #create member tier
+            new_plan = Plan(
+                user_id=new_user.id
+            )
+            db.add(new_plan)
+            db.commit()
+            db.refresh(new_plan)
             
             # get first and last name
             words = user.name.split()
@@ -100,6 +116,7 @@ def oauth(user: OAuthBody, auth: AuthJWT = Depends(), db: Session = Depends(get_
         
         access_token = auth.create_access_token(subject=user.email)
         refresh_token = auth.create_refresh_token(subject=user.email)
+
         return {"access_token": access_token, "refresh_token": refresh_token}
     
     except:

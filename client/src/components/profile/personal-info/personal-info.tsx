@@ -198,7 +198,7 @@ const PersonalInfo: FunctionComponent<PersonalInfoProps> = ({ user }) => {
 
     useEffect(() => {
         if (user) {
-            const { plan, profile_pic, user_id, ...data } = user.profile
+            const { profile_pic, user_id, ...data } = user.profile
             setUserProfile(data)
         }
     }, [user])

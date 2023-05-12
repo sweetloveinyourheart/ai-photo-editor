@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi_jwt_auth import AuthJWT
 from database import get_db
 from sqlalchemy.orm import Session
-from models import User, Profile
+from models import User, Profile, Plan
 from .dto import UserProfile
 from utils import hash_pwd, check_pwd
 
@@ -14,16 +14,19 @@ def get_user_profile(authorize: AuthJWT = Depends(), db: Session = Depends(get_d
 
     current_user = authorize.get_jwt_subject()
 
-    account = db.query(User, Profile).join(Profile).filter(User.email == current_user).first()
+    account = db.query(User, Profile, Plan).join(Profile).join(Plan).filter(User.email == current_user).first()
     user = {k: v for k, v in vars(account[0]).items() if k != "password"}
     profile = {k: v for k, v in vars(account[1]).items() if k != "id"}
+    plan = {k: v for k, v in vars(account[2]).items() if k != "id" and k != "user_id"}
+
     result = { "user": user }
     result["user"]["profile"] = profile
+    result["user"]["plan"] = plan
 
     return result
 
 @router.post("/edit-profile")
-def get_user_profile(user_data: UserProfile, authorize: AuthJWT = Depends(), db: Session = Depends(get_db)):
+def edit_user_profile(user_data: UserProfile, authorize: AuthJWT = Depends(), db: Session = Depends(get_db)):
     authorize.jwt_required()
 
     current_user = authorize.get_jwt_subject()

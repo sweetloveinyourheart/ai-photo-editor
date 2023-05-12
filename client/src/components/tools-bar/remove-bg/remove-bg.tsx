@@ -38,7 +38,7 @@ const RemoveBG: FunctionComponent<RemoveBGProps> = () => {
             </h5>
             <div className={styles["rm-bg-frame"]}>
                 <p className={styles["frame-text"]}>
-                    Remove your background's image just in 1 click !
+                    Remove your background&apos;s image just in 1 click !
                 </p>
                 <div className={styles["frame-img"]}>
                     <Image

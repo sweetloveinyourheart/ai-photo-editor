@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 
-export const authOptions = {
+ const authOptions = {
   providers: [
     GoogleProvider({
       clientId: "310888365322-2uor783c9k68k0d3bva6nrcgrrfst9ut.apps.googleusercontent.com",

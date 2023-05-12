@@ -1,6 +1,6 @@
 "use client"
 
-import { FunctionComponent } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import styles from './header.module.scss'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { IoDiamondOutline } from 'react-icons/io5'
@@ -9,17 +9,36 @@ import UserMenu from "./user-menu/user-menu";
 import { EditorStatus, useEditor } from "@/contexts/editor";
 import { dataUrlToBlob } from "@/utils/dataUrl";
 import { useRouter } from 'next/navigation';
+import { useAuth } from "@/contexts/auth";
+import { User } from "@/components/profile";
+import { getProfile } from "@/services/user";
 
-interface MainPageHeaderProps {
-
-}
+interface MainPageHeaderProps { }
 
 const MainPageHeader: FunctionComponent<MainPageHeaderProps> = () => {
+    const [user, setUser] = useState<User | null>(null)
+    const [activeTab, setActiveTab] = useState<number>(0)
+
+    const { accessToken } = useAuth()
     const { imageEditor, setStatus } = useEditor()
     const router = useRouter()
 
+    useEffect(() => {
+        if (accessToken)
+            (async () => {
+                const user = await getProfile()
+                if (user) {
+                    setUser(user)
+                }
+            })()
+    }, [accessToken])
+
     const onLogoClick = () => {
         router.push('/')
+    }
+
+    const onPremiumClick = () => {
+        router.push('/profile')
     }
 
     const handleOpenImg = async () => {
@@ -30,7 +49,7 @@ const MainPageHeader: FunctionComponent<MainPageHeaderProps> = () => {
 
         // listen for file reading
         const listener = (e: any) => {
-            if(e.target?.files[0]) {
+            if (e.target?.files[0]) {
                 setStatus(EditorStatus.ReadyToEdit)
                 btn.removeEventListener('change', listener)
             }
@@ -62,10 +81,20 @@ const MainPageHeader: FunctionComponent<MainPageHeaderProps> = () => {
                 </label>
             </div>
             <div className={styles["right-panel"]}>
-                <div className={styles["premium"]}>
-                    <IoDiamondOutline />
-                    <span>Premium</span>
-                </div>
+                {(user && user.plan.membership_tier > 0)
+                    ? (
+                        <div className={`${styles["premium"]} ${styles["premium--activated"]}`} >
+                            <IoDiamondOutline />
+                            <span>Premium Account</span>
+                        </div>
+                    )
+                    : (
+                        <div className={styles["premium"]} onClick={onPremiumClick} >
+                            <IoDiamondOutline />
+                            <span>Upgrade</span>
+                        </div>
+                    )
+                }
                 <button className={styles["download-btn"]} onClick={handleDownload}>
                     <FiDownload />
                     <span>Download</span>

@@ -73,7 +73,6 @@
     }
 
     .premium {
-        color: #fff;
         font-size: 14px;
         padding: 8px 16px;
         display: flex;
@@ -83,6 +82,10 @@
 
         span {
             margin-left: 4px;
+        }
+
+        &--activated {
+            color: #14a7fa;
         }
     }
 }

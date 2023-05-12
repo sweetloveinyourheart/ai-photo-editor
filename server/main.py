@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from fastapi_jwt_auth.exceptions import AuthJWTException
-from api import auth_router, generator_router, user_router, remover_bg_router
+from api import auth_router, generator_router, user_router, remover_bg_router, payment_router
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import os
@@ -26,6 +26,7 @@ app.include_router(auth_router, prefix="/auth", tags=["Authentication"])
 app.include_router(generator_router, prefix="/generator", tags=["Generator"])
 app.include_router(user_router, prefix="/user", tags=["User"])
 app.include_router(remover_bg_router, prefix="/background", tags=["Background"])
+app.include_router(payment_router, prefix="/payment", tags=["Payment"])
 
 # exception handler
 @app.exception_handler(AuthJWTException)
