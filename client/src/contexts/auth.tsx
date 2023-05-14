@@ -7,6 +7,7 @@ import { clearRefreshToken, getRefreshToken, setRefreshToken } from "@/utils/coo
 import Authentication from "@/components/auth";
 import PageLoading from "@/ui/page-loading/page-loading";
 import { useSession } from "next-auth/react";
+import MobileVariant from "@/components/mobile-variant/mobile-variant";
 
 interface Auth {
     accessToken: string | null
@@ -34,6 +35,7 @@ export function AuthGuard({ children }: { children: any }) {
 export default function AuthProvider({ children }: { children: any }) {
     const [accessToken, setAccessToken] = useState<string | null>(null)
     const [loading, setLoading] = useState<boolean>(true)
+    const [isMobile, setIsMobile] = useState<boolean>(false)
 
     const { data: session } = useSession()
 
@@ -47,6 +49,11 @@ export default function AuthProvider({ children }: { children: any }) {
         setAccessToken(null)
         clearRefreshToken()
     }, [])
+
+    useEffect(() => {
+        const isMobileDevice = /Mobi|Android/i.test(navigator.userAgent);
+        setIsMobile(isMobileDevice);
+    }, []);
 
     useEffect(() => {
         const user = session?.user
@@ -111,7 +118,9 @@ export default function AuthProvider({ children }: { children: any }) {
 
     return (
         <AuthContext.Provider value={memoedValue}>
-            {children}
+            <MobileVariant isMobile={isMobile}>
+                {children}
+            </MobileVariant>
         </AuthContext.Provider>
     )
 }

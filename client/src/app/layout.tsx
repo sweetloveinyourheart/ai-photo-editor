@@ -21,7 +21,7 @@ export default function RootLayout({
           <AuthProvider>
             <MessageProvider>
               <PaypalProvider>
-                {children}
+                  {children}
               </PaypalProvider>
             </MessageProvider>
           </AuthProvider>
