@@ -38,6 +38,7 @@ def generate_image_by_text(generator: TextGenerator, authorize: AuthJWT = Depend
             rate_limit(current_user)
 
             return image
-        except:
+        except Exception as err:
+            print(err)
             raise HTTPException(400, detail="Draw failed, check your word and try again")
 
