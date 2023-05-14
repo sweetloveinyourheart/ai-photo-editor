@@ -62,7 +62,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 16072001
     ports:
-      - "5431:5432"
+      - "5432:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
     networks:
