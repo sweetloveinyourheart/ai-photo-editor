@@ -22,11 +22,11 @@ app.add_middleware(
 )
 
 # routes
-app.include_router(auth_router, prefix="/api/auth", tags=["Authentication"])
-app.include_router(generator_router, prefix="/api/generator", tags=["Generator"])
-app.include_router(user_router, prefix="/api/user", tags=["User"])
-app.include_router(remover_bg_router, prefix="/api/background", tags=["Background"])
-app.include_router(payment_router, prefix="/api/payment", tags=["Payment"])
+app.include_router(auth_router, prefix="/api-v1/auth", tags=["Authentication"])
+app.include_router(generator_router, prefix="/api-v1/generator", tags=["Generator"])
+app.include_router(user_router, prefix="/api-v1/user", tags=["User"])
+app.include_router(remover_bg_router, prefix="/api-v1/background", tags=["Background"])
+app.include_router(payment_router, prefix="/api-v1/payment", tags=["Payment"])
 
 # exception handler
 @app.exception_handler(AuthJWTException)

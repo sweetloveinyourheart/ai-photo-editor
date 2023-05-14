@@ -26,6 +26,13 @@ COPY . .
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED 1
+ENV API_ENDPOINT https://eiradev.com/api-v1
+ENV NEXTAUTH_URL https://eiradev.com
+ENV NEXTAUTH_SECRET my_ultra_secure_nextauth_secret
+ENV GOOGLE_CLIENT_ID 310888365322-2uor783c9k68k0d3bva6nrcgrrfst9ut.apps.googleusercontent.com
+ENV GOOGLE_CLIENT_SECRET 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
+ENV PAYPAL_CLIENT_ID AcjyvOMl4DEGzZ8qLkyew-BX7UYuK9YogghLq9_NePl49fw_TR6vXmEppMu-sKajQj7vKnGwsdvS4JL1
+ENV PAYPAL_APP_SECRET EHkgKizlHKect1ynT6oU3kX6i2UtwTaL0ke1pnvw4dRqP3vZ5VCVo_q9XvE3me1SsL_wjK-KFReZHZPC
 
 RUN yarn build
 
@@ -47,6 +54,7 @@ COPY --from=builder /app/public ./public
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=builder /app/next.config.js ./ 
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 

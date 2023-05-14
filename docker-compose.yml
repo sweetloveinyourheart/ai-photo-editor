@@ -10,7 +10,7 @@ services:
       target: runner
       dockerfile: Dockerfile
     environment:
-      API_ENDPOINT: https://eiradev.com/api
+      API_ENDPOINT: https://eiradev.com/api-v1
       NEXTAUTH_URL: https://eiradev.com
       NEXTAUTH_SECRET: my_ultra_secure_nextauth_secret
       GOOGLE_CLIENT_ID: 310888365322-2uor783c9k68k0d3bva6nrcgrrfst9ut.apps.googleusercontent.com
@@ -20,9 +20,9 @@ services:
 
     ports:
       - "3000:3000"
-    depends_on:
-      api:
-        condition: service_started
+    # depends_on:
+    #   api:
+    #     condition: service_started
     networks:
       - shared-network
       
