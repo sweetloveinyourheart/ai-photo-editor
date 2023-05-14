@@ -39,7 +39,7 @@ services:
       POSTGRES_HOST: db
       POSTGRES_DB: image_editor
       SECRET_KEY :  mysecretkey
-      OPENAI_API_KEY: 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
+      OPENAI_API_KEY: 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
       CLIENT_CORS_ORIGIN: https://eiradev.com
       REDIS_HOST: redis
       REDIS_PORT: 6379
