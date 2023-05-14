@@ -1,9 +1,106 @@
 version: "3.8"
 
 services:
+  app:
+    image: app
+    container_name: app
+    hostname: app
+    build: 
+      context: client
+      target: runner
+      dockerfile: Dockerfile
+    environment:
+      API_ENDPOINT: https://eiradev.com/api
+      NEXTAUTH_URL: https://eiradev.com
+      NEXTAUTH_SECRET: my_ultra_secure_nextauth_secret
+      GOOGLE_CLIENT_ID: 310888365322-2uor783c9k68k0d3bva6nrcgrrfst9ut.apps.googleusercontent.com
+      GOOGLE_CLIENT_SECRET: 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
+      PAYPAL_CLIENT_ID: AcjyvOMl4DEGzZ8qLkyew-BX7UYuK9YogghLq9_NePl49fw_TR6vXmEppMu-sKajQj7vKnGwsdvS4JL1
+      PAYPAL_APP_SECRET: EHkgKizlHKect1ynT6oU3kX6i2UtwTaL0ke1pnvw4dRqP3vZ5VCVo_q9XvE3me1SsL_wjK-KFReZHZPC
+
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+    networks:
+      - shared-network
+      
+  api:
+    image: api
+    container_name: api
+    hostname: api
+    build: 
+      context: server
+      dockerfile: Dockerfile
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASS: 16072001
+      POSTGRES_HOST: localhost
+      POSTGRES_DB: image-editor
+      SECRET_KEY :  mysecretkey
+      OPENAI_API_KEY: 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
+      CLIENT_CORS_ORIGIN: https://eiradev.com
+      REDIS_HOST: localhost
+      REDIS_PORT: 6379
+      CLIENT_ID: AcjyvOMl4DEGzZ8qLkyew-BX7UYuK9YogghLq9_NePl49fw_TR6vXmEppMu-sKajQj7vKnGwsdvS4JL1
+      APP_SECRET: EHkgKizlHKect1ynT6oU3kX6i2UtwTaL0ke1pnvw4dRqP3vZ5VCVo_q9XvE3me1SsL_wjK-KFReZHZPC
+    ports:
+      - "8000:8000"
+
+    depends_on:
+      - db
+      - redis
+    networks:
+      - shared-network
+
+  db:
+    image: postgres:latest
+    container_name: db
+    hostname: db
+    environment:
+      POSTGRES_DB: bus_station
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 16072001
+    ports:
+      - "5431:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - shared-network
+
   redis:
     image: redis
     container_name: redis
     restart: always
     ports:
       - "6379:6379"
+    networks:
+      - shared-network
+
+  nginx: 
+    image: nginx:latest
+    container_name: nginx
+    hostname: nginx
+    ports:
+      - 80:80
+    
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    
+    command: /bin/sh -c "nginx -g 'daemon off;'"
+
+    depends_on:
+      app:
+        condition: service_started
+      api:
+        condition: service_started
+
+    networks:
+      - shared-network
+
+volumes:
+  db-data:
+
+networks:
+  shared-network:
+    driver: bridge
