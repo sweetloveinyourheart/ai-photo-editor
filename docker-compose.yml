@@ -35,7 +35,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASS: 16072001
-      POSTGRES_HOST: localhost
+      POSTGRES_HOST: 0:0:0:0
       POSTGRES_DB: image-editor
       SECRET_KEY :  mysecretkey
       OPENAI_API_KEY: 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
