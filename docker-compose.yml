@@ -36,12 +36,12 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASS: 16072001
-      POSTGRES_HOST: localhost
+      POSTGRES_HOST: db
       POSTGRES_DB: image-editor
       SECRET_KEY :  mysecretkey
       OPENAI_API_KEY: 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
       CLIENT_CORS_ORIGIN: https://eiradev.com
-      REDIS_HOST: localhost
+      REDIS_HOST: redis
       REDIS_PORT: 6379
       CLIENT_ID: AcjyvOMl4DEGzZ8qLkyew-BX7UYuK9YogghLq9_NePl49fw_TR6vXmEppMu-sKajQj7vKnGwsdvS4JL1
       APP_SECRET: EHkgKizlHKect1ynT6oU3kX6i2UtwTaL0ke1pnvw4dRqP3vZ5VCVo_q9XvE3me1SsL_wjK-KFReZHZPC
