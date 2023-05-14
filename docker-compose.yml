@@ -20,9 +20,9 @@ services:
 
     ports:
       - "3000:3000"
-    # depends_on:
-    #   # api:
-    #   #   condition: service_started
+    depends_on:
+      api:
+        condition: service_started
     networks:
       - shared-network
       
