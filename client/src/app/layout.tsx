@@ -7,6 +7,9 @@ import PaypalProvider from '@/contexts/paypal'
 export const metadata = {
   title: 'AI Image Generator',
   description: 'An application for image editing and image creation',
+  icons: {
+    icon: '/favicon.ico'
+  }
 }
 
 export default function RootLayout({
