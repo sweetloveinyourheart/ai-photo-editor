@@ -37,7 +37,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASS: 16072001
       POSTGRES_HOST: db
-      POSTGRES_DB: image-editor
+      POSTGRES_DB: image_editor
       SECRET_KEY :  mysecretkey
       OPENAI_API_KEY: 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
       CLIENT_CORS_ORIGIN: https://eiradev.com
