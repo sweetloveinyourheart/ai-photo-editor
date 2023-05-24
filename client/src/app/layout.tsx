@@ -8,8 +8,8 @@ export const metadata = {
   title: 'AI Image Generator',
   description: 'An application for image editing and image creation',
   icons: {
-    icon: '/favicon.ico',
-  },
+    icon: '/favicon.ico'
+  }
 }
 
 export default function RootLayout({
