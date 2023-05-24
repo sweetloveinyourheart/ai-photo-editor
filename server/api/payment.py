@@ -33,8 +33,10 @@ async def capture_paypal_order(order: CapturePaymentDTO, authorize: AuthJWT = De
     plan = db.query(Plan).filter(Plan.user_id == account.id).first()
     if amount < 10.00:
         plan.membership_tier = 1
+        plan.generation_limited = 50
     else:
         plan.membership_tier = 2
+        plan.generation_limited = 100
 
     #store payment information such as the transaction ID
     new_payment = Payment(

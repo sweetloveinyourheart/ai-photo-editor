@@ -21,7 +21,7 @@ def generate_image_by_text(generator: TextGenerator, authorize: AuthJWT = Depend
 
         current_user = authorize.get_jwt_subject()
         account = db.query(User, Plan).join(Plan).filter(User.email == current_user).first()
-        
+
         # limit request by user tier
         accept_request = limit_check(current_user, account[1].generation_limited)
         if not accept_request:
@@ -38,6 +38,7 @@ def generate_image_by_text(generator: TextGenerator, authorize: AuthJWT = Depend
             rate_limit(current_user)
 
             return image
-        except:
+        except Exception as e:
+            print(e)
             raise HTTPException(400, detail="Draw failed, check your word and try again")
 
