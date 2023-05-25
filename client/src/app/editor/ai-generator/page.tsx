@@ -6,12 +6,10 @@ import AIArt from "@/components/tools-bar/ai-art/ai-art";
 function AIGenerator() {
     return (
         <>
-            <SidebarMask>
-                <MainSidebar nav={3} />
-                <ToolsBar>
-                    <AIArt />
-                </ToolsBar>
-            </SidebarMask>
+            <MainSidebar nav={3} />
+            <ToolsBar>
+                <AIArt />
+            </ToolsBar>
         </>
     );
 }

@@ -4,10 +4,10 @@ import GoogleProvider from 'next-auth/providers/google'
  const authOptions = {
   providers: [
     GoogleProvider({
-      clientId: "310888365322-v1gpo4fskp6j0fjshbi0gl9obipuo225.apps.googleusercontent.com",
-      clientSecret: "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"
+      clientId: "310888365322-5giiflk1hc8cd7h6m8rc32t2i2sbma1v.apps.googleusercontent.com",
+      clientSecret: "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"
     })
-  ]
+  ],
 }
 
 const handler = NextAuth(authOptions)

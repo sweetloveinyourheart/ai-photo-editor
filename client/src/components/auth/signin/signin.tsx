@@ -64,10 +64,10 @@ const SignIn: FunctionComponent<SignInProps> = ({ changeTab }) => {
                     <BsFacebook color="#14a" size={20} />
                     <p>Login with Facebook</p>
                 </div> */}
-                <div className={styles['oauth-method-item']} onClick={onGoogleClick}>
+                {/* <div className={styles['oauth-method-item']} onClick={onGoogleClick}>
                     <FcGoogle color="#f93707" size={20} />
                     <p>Login with Google</p>
-                </div>
+                </div> */}
             </div>
             <div className={styles['split-line']}>
                 <span>or</span>
